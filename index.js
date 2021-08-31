@@ -455,7 +455,7 @@ const ScrollableTabView = createReactClass({
       };
     }
 
-    return (
+    return Platform.OS === "ios" ? (
       <View
         style={[styles.container, this.props.style]}
         onLayout={this._handleLayout}
@@ -465,7 +465,7 @@ const ScrollableTabView = createReactClass({
         {(this.props.tabBarPosition === "bottom" || overlayTabs) &&
           this.renderTabBar(tabBarProps)}
       </View>
-    );
+    ) : null;
   },
 });
 
