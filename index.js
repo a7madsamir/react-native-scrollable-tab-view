@@ -474,6 +474,7 @@ module.exports = ScrollableTabView;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    direction: "ltr",
   },
   scrollableContentAndroid: {
     flex: 1,

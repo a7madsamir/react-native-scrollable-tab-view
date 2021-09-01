@@ -5,7 +5,6 @@ const createReactClass = require("create-react-class");
 const { View, Animated, StyleSheet, ScrollView, Text, Platform, Dimensions } =
   ReactNative;
 const Button = require("./Button");
-const { I18nManager } = require("react-native");
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const ScrollableTabBar = createReactClass({
@@ -83,26 +82,11 @@ const ScrollableTabBar = createReactClass({
   },
 
   updateTabPanel(position, pageOffset) {
-    const containerWidth = this._containerMeasurements.width;
-    const tabWidth = this._tabsMeasurements[position].width;
-    const nextTabMeasurements = this._tabsMeasurements[position + 1];
-    const nextTabWidth =
-      (nextTabMeasurements && nextTabMeasurements.width) || 0;
-    const tabOffset = this._tabsMeasurements[position].left;
-    const absolutePageOffset = pageOffset * tabWidth;
-    let newScrollX = tabOffset + absolutePageOffset;
+    const absolutePageOffset =
+      pageOffset * this._tabsMeasurements[position].width;
+    var newScrollX = this._tabsMeasurements[position].left + absolutePageOffset;
 
-    newScrollX = I18nManager.isRTL
-      ? containerWidth +
-        (1 - pageOffset) * tabWidth -
-        pageOffset * nextTabWidth -
-        newScrollX
-      : newScrollX -
-        (containerWidth -
-          (1 - pageOffset) * tabWidth -
-          pageOffset * nextTabWidth) /
-          2;
-
+    newScrollX -= this.props.scrollOffset;
     newScrollX = newScrollX >= 0 ? newScrollX : 0;
 
     if (Platform.OS === "android") {
@@ -275,7 +259,7 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
   },
   tabs: {
-    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+    flexDirection: "row",
     justifyContent: "space-around",
   },
 });
